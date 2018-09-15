@@ -1,3 +1,5 @@
+import re
+
 metricConversions = {
 				'Y' : (10 ** 24),
 				'Z' : (10 ** 21),
@@ -8,8 +10,8 @@ metricConversions = {
 				'M' : (10 ** 6),
 				'k' : (10 ** 3),
 				'h' : (10 ** 2),
-				'da' : 10,
-				'base': 1,
+				'd' : 10,
+				'b': 1,
 				'd' : (10 ** -1),
 				'c' : (10 ** -2),
 				'm' : (10 ** -3),
@@ -22,18 +24,52 @@ metricConversions = {
 				'y' : (10 ** -24)
 				}
 
+# Returns the number from the current unit
+def grabNbr(str):
+	# regex that finds any int or float in the str and returns a list
+	nbr = (re.findall(r'\d+(?:\.\d+)?', str))
+	return float(nbr[0])
+
+def stripStr(currentUnit, desiredUnit):
+	nbr = grabNbr(currentUnit)
+	if currentUnit.find('micro') == -1:
+		currentUnit = currentUnit.strip()[-1]	# Removes whitespace around str and grabs unit
+	else:
+		currentUnit = 'micro'
+	if desiredUnit.find('micro') == -1:
+		desiredUnit = desiredUnit.strip()		# Same thing but str should only be a character
+	else:
+		desiredUnit = 'micro'
+
+	return nbr, currentUnit, desiredUnit
+
 def convert(currentUnit, desiredUnit):
-	pass
-	
+	nbr, currentUnit, desiredUnit = stripStr(currentUnit, desiredUnit)
+
+	conversion1 = metricConversions[currentUnit]
+	conversion2 = metricConversions[desiredUnit]
+
+	# If current unit isnt base, will multiply nbr to get it in base
+	if currentUnit != 'b':
+		nbr *= conversion1
+		if desiredUnit == 'b':
+			print('\n===================\n')
+			print(nbr, desiredUnit)
+			return
+	nbr /= conversion2
+	print('\n===================\n')
+	print (nbr, desiredUnit)
+
+# TODO:
 def str_works(currentUnit, desiredUnit):
-	pass
+	return True
 
 def print_abbreve_table():
 	print ('\nAbbreviations for units:\n|\t(exactly as written)\t|')
 	print ('|\tYotta => Y\t\t|\n|\tZetta => Z\t\t|')
 	print ('|\tExo => E\t\t|\n|\tPetam => P\t\t|\n|\tTera => T\t\t|')
 	print ('|\tGigo => G\t\t|\n|\tMega => M\t\t|\n|\tKilo => K\t\t|')
-	print ('|\tHecto => h\t\t|\n|\tDeca => da\t\t|\n|\tBase (m, g) => base\t|')
+	print ('|\tHecto => h\t\t|\n|\tDeca => d\t\t|\n|\tBase (m, g) => b\t|')
 	print ('|\tMicro => micro\t\t|\n|\tNano=> n\t\t|\n|\tPico => p\t\t|')
 	print ('|\tFemto => f\t\t|\n|\tAtto => a\t\t|')
 	print ('|\tZepto => z\t\t|\n|\tYocto => y\t\t|')
