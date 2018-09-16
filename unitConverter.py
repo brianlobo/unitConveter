@@ -1,5 +1,6 @@
 import re
 
+# Holds the metric conversions to base
 metricConversions = {
 				'Y' : (10 ** 24),
 				'Z' : (10 ** 21),
@@ -23,6 +24,29 @@ metricConversions = {
 				'z' : (10 ** -21),
 				'y' : (10 ** -24)
 				}
+
+def str_works(currentUnit, desiredUnit):
+	# Checks to see if micro is in either str
+	cUnit = currentUnit.find('micro')
+	dUnit = desiredUnit.find('micro')
+
+	# Checks to see if cUnit is micro or in the conversionTable
+	if cUnit == -1:
+		cUnit = currentUnit.strip()[-1] in metricConversions
+	else:
+		cUnit = True
+
+	# Checks to see if dUnit is micro or in the conversionTable
+	if dUnit == -1:
+		dUnit = desiredUnit.strip() in metricConversions
+	else:
+		dUnit = True
+
+	# If both are True, return true. Else return False!
+	if cUnit and dUnit:
+		return True
+	else:
+		return False
 
 # Returns the number from the current unit
 def grabNbr(str):
@@ -54,15 +78,11 @@ def convert(currentUnit, desiredUnit):
 		nbr *= conversion1
 		if desiredUnit == 'b':
 			print('\n===================\n')
-			print(nbr, desiredUnit)
+			print(round(nbr, 4), desiredUnit)
 			return
 	nbr /= conversion2
 	print('\n===================\n')
-	print (nbr, desiredUnit)
-
-# TODO:
-def str_works(currentUnit, desiredUnit):
-	return True
+	print (round(nbr, 4), desiredUnit)
 
 def print_abbreve_table():
 	print ('\nAbbreviations for units:\n|\t(exactly as written)\t|')
@@ -92,7 +112,6 @@ def user_types_error():
 	main()
 
 def main():
-	print_abbreve_table()
 
 	# Grabs users current and desired unit
 	currentUnit = input("\nPlease enter what you want converted\n|example: 12 k (km or kg)|\n:")
@@ -108,5 +127,5 @@ def main():
 		user_types_error()
 
 if __name__ == '__main__':
-#	print_abbreve_table()
+	print_abbreve_table()
 	main()
