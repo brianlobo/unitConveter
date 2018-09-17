@@ -1,29 +1,5 @@
 import re
-
-# Holds the metric conversions to base
-metricConversions = {
-				'Y' : (10 ** 24),
-				'Z' : (10 ** 21),
-				'E' : (10 ** 18),
-				'P' : (10 ** 15),
-				'T' : (10 ** 12),
-				'G' : (10 ** 9),
-				'M' : (10 ** 6),
-				'k' : (10 ** 3),
-				'h' : (10 ** 2),
-				'd' : 10,
-				'b': 1,
-				'd' : (10 ** -1),
-				'c' : (10 ** -2),
-				'm' : (10 ** -3),
-				'micro' : (10 ** -6),
-				'n' : (10 ** -9),
-				'p' : (10 ** -12),
-				'f' : (10 ** -15),
-				'a' : (10 ** -18),
-				'z' : (10 ** -21),
-				'y' : (10 ** -24)
-				}
+import conversions
 
 def str_works(currentUnit, desiredUnit):
 	# Checks to see if micro is in either str
@@ -32,13 +8,13 @@ def str_works(currentUnit, desiredUnit):
 
 	# Checks to see if cUnit is micro or in the conversionTable
 	if cUnit == -1:
-		cUnit = currentUnit.strip()[-1] in metricConversions
+		cUnit = currentUnit.strip()[-1] in conversions.metricConversions
 	else:
 		cUnit = True
 
 	# Checks to see if dUnit is micro or in the conversionTable
 	if dUnit == -1:
-		dUnit = desiredUnit.strip() in metricConversions
+		dUnit = desiredUnit.strip() in conversions.metricConversions
 	else:
 		dUnit = True
 
@@ -70,8 +46,8 @@ def stripStr(currentUnit, desiredUnit):
 def convert(currentUnit, desiredUnit):
 	nbr, currentUnit, desiredUnit = stripStr(currentUnit, desiredUnit)
 
-	conversion1 = metricConversions[currentUnit]
-	conversion2 = metricConversions[desiredUnit]
+	conversion1 = conversions.metricConversions[currentUnit]
+	conversion2 = conversions.metricConversions[desiredUnit]
 
 	# If current unit isnt base, will multiply nbr to get it in base
 	if currentUnit != 'b':
