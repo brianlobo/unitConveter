@@ -1,4 +1,3 @@
-import re
 import convert
 
 def print_abbreve_table():

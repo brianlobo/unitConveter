@@ -1,4 +1,5 @@
 import conversions
+import re
 
 def str_works(currentUnit, desiredUnit):
 	# Checks to see if micro is in either str
